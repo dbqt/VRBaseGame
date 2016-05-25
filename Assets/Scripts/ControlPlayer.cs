@@ -109,11 +109,11 @@ public class ControlPlayer : MonoBehaviour {
 
     if (trackRotation) {
       var rot = Cardboard.SDK.HeadPose.Orientation;
-      if (target == null) {
+      //if (target == null) {
         transform.localRotation = rot;
-      } else {
-        transform.rotation = target.rotation * rot;
-      }
+      //} else {
+      //  transform.rotation = target.rotation * rot;
+      //}
     }
 
     if (trackPosition) {
@@ -131,7 +131,7 @@ public class ControlPlayer : MonoBehaviour {
 
         }
         Debug.Log(target.rotation.eulerAngles.z);
-        temp.z += 0.1f;
+        //temp.z += 0.1f;
         transform.position = temp;
       }
     }
