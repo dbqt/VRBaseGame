@@ -7,7 +7,6 @@ public class PipeGeneration : MonoBehaviour {
 
 	public GameObject StraightPipe;
 	public GameObject CurvedPipe;
-	public Transform PlayerReference;
 
 	private Queue<GameObject> _pipePool;
 	private Vector3 _lastPosition;
@@ -19,7 +18,7 @@ public class PipeGeneration : MonoBehaviour {
 		_lastRotation = Quaternion.identity;
 		_pipePool = new Queue<GameObject>();
 
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 4; i++)
 		{
 			AddNextPipe();
 		}
@@ -45,10 +44,10 @@ public class PipeGeneration : MonoBehaviour {
 	}
 
 	// Delete last pipe and add one new pipe to the queue.
-	private void RefreshPipe()
+	public void RefreshPipe()
 	{
 		AddNextPipe();
-		Destroy(_pipePool.Dequeue());
+		Destroy(_pipePool.Dequeue(), 10f);
 	}
 
 	// Instantiate one new pipe randomly.
