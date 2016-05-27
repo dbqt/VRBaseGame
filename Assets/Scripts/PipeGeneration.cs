@@ -19,10 +19,9 @@ public class PipeGeneration : MonoBehaviour {
 		_lastRotation = Quaternion.identity;
 		_pipePool = new Queue<GameObject>();
 
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 10; i++)
 		{
 			AddNextPipe();
-			Debug.Log(i);
 		}
 	}
 	
@@ -31,6 +30,7 @@ public class PipeGeneration : MonoBehaviour {
 	
 	}
 
+	// Add one new pipe and queues it.
 	private void AddNextPipe()
 	{
 		GameObject newPipe = RandomPipe();
@@ -44,12 +44,14 @@ public class PipeGeneration : MonoBehaviour {
 		_pipePool.Enqueue(newPipe);
 	}
 
+	// Delete last pipe and add one new pipe to the queue.
 	private void RefreshPipe()
 	{
 		AddNextPipe();
 		Destroy(_pipePool.Dequeue());
 	}
 
+	// Instantiate one new pipe randomly.
 	private GameObject RandomPipe()
 	{
 		int random = Random.Range(0,2);
@@ -58,19 +60,24 @@ public class PipeGeneration : MonoBehaviour {
 			case 0:
 				return Instantiate(StraightPipe, _lastPosition, _lastRotation) as GameObject;
 			case 1:
-				
-				int randRotation = Random.Range(0,6);
-				
 				GameObject newPipe = Instantiate(CurvedPipe, _lastPosition, _lastRotation) as GameObject;
-				newPipe.transform.Rotate(randRotation*60f, 0f, 0f);
-				Vector3 t = newPipe.transform.localRotation.eulerAngles;
-				t.y += 90f;
-				_lastRotation.eulerAngles = t;
+
+				int randRotation = Random.Range(0,6);
+
+				// Calculate next rotation.
+				GameObject g = new GameObject("g");
+				g.transform.rotation = newPipe.transform.rotation;
+				g.transform.Rotate(randRotation*60f,0f,0f, Space.Self);
+				g.transform.Rotate(0f,90f,0f, Space.Self);
+				_lastRotation = g.transform.rotation;
+				Destroy(g);
+
+				newPipe.transform.Rotate(randRotation*60f, 0f, 0f, Space.Self);
+
 				return newPipe;
 			default:
 				return Instantiate(StraightPipe, _lastPosition, _lastRotation) as GameObject;
 			break;
-
 		}
 	}
 }
