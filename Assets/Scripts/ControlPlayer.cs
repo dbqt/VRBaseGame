@@ -124,14 +124,14 @@ public class ControlPlayer : MonoBehaviour {
         //transform.position.z = target.position + target.rotation * pos;
         Vector3 temp = transform.position;
         if(target.rotation.eulerAngles.z > minimumRightAngle && target.rotation.eulerAngles.z <= maximumRightAngle){
-        	temp.x -= horizontalSpeed;
+        	//temp.x -= horizontalSpeed;
         } else if(target.rotation.eulerAngles.z > minimumLeftAngle && target.rotation.eulerAngles.z <= maximumLeftAngle){
-        	temp.x += horizontalSpeed;
+        	//temp.x += horizontalSpeed;
         } else {
 
         }
         Debug.Log(target.rotation.eulerAngles.z);
-        temp.z += 0.1f;
+        //temp.z += 0.1f;
         transform.position = temp;
       }
     }
