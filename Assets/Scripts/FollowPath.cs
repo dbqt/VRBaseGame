@@ -1,31 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
-public class PipeGeneration : MonoBehaviour {
+public class FollowPath : MonoBehaviour {
 
+	[Header("Follow Parameters")]
+	public float speed;
+
+	[Header("Generation Parameters")]
 	public GameObject StraightPipe;
 	public GameObject CurvedPipe;
-	public GameObject ReferencePoint;
 
-	private Queue<GameObject> _pipePool;
+	private Queue<GameObject> PipeFollowQueue;
+	private Queue<GameObject> PipeGenerationQueue;
+
 	private Vector3 _lastPosition;
 	private Quaternion _lastRotation;
 
+	private bool _first;
 	// Use this for initialization
 	void Start () {
-		Debug.Log("PipeGeneration");
+
+		// init
+		iTween.Init(this.gameObject);
 		_lastPosition = Vector3.zero;
 		_lastRotation = Quaternion.identity;
-		_pipePool = new Queue<GameObject>();
+		_first = true;
+		PipeGenerationQueue = new Queue<GameObject>();
+		PipeFollowQueue = new Queue<GameObject>();
 
+		// generate
 		for(int i = 0; i < 4; i++)
 		{
-			AddNextPipe();
+			CreateNextPipe();
 		}
 
-		ReferencePoint.GetComponent<FollowPath>().FollowNextPath();
+		// start following
+		FollowNextPath();
 	}
 	
 	// Update is called once per frame
@@ -33,8 +44,39 @@ public class PipeGeneration : MonoBehaviour {
 	
 	}
 
+	public void FollowNextPath()
+	{
+		RefreshPipe();
+		if(PipeFollowQueue.Count <= 0) return; // End follow path
+
+		GameObject nextPipe = PipeFollowQueue.Dequeue();
+		Transform[] references = nextPipe.GetComponent<PipeReferencing>().References;
+		iTween.MoveTo(this.gameObject, iTween.Hash(
+			"name", "p", 
+			"path", references, 
+			"speed", speed, 
+			"easetype", "linear", 
+			"orienttopath", true,
+			"oncomplete", "FollowNextPath",
+			"movetopath", false
+		));
+	}
+
+	// Delete last pipe and add one new pipe to the queue.
+	public void RefreshPipe()
+	{
+		CreateNextPipe();
+		// skip first destroy
+		if(_first)
+		{
+			_first = false;
+			return;
+		}
+		Destroy(PipeGenerationQueue.Dequeue(), 10f);
+	}
+
 	// Add one new pipe and queues it.
-	private void AddNextPipe()
+	private void CreateNextPipe()
 	{
 		GameObject newPipe = RandomPipe();
 		foreach (Transform child in newPipe.transform) {
@@ -44,14 +86,8 @@ public class PipeGeneration : MonoBehaviour {
             	break;
             }
         }
-		_pipePool.Enqueue(newPipe);
-	}
-
-	// Delete last pipe and add one new pipe to the queue.
-	public void RefreshPipe()
-	{
-		AddNextPipe();
-		Destroy(_pipePool.Dequeue(), 10f);
+		PipeGenerationQueue.Enqueue(newPipe);
+		PipeFollowQueue.Enqueue(newPipe);
 	}
 
 	// Instantiate one new pipe randomly.
@@ -83,4 +119,5 @@ public class PipeGeneration : MonoBehaviour {
 			break;
 		}
 	}
+
 }
