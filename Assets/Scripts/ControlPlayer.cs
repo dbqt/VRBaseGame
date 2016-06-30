@@ -64,7 +64,11 @@ public class ControlPlayer : MonoBehaviour {
   /// If this is the case for your game, try switching the head to apply head tracking
   /// during `Update()` by setting this to true.
   public bool updateEarly = false;
-  public float horizontalSpeed = 1f, minimumLeftAngle = 181f, minimumRightAngle = 10f, maximumLeftAngle = 350f, maximumRightAngle = 180f;
+  public float minimumLeftAngle = 181f, minimumRightAngle = 10f, 
+  	maximumLeftAngle = 350f, maximumRightAngle = 180f, rotateSpeed = 3f;
+  public Vector3 rotationVector;
+
+  public Transform middlePoint, parent, mainCamera;
 
   /// Returns a ray based on the heads position and forward direction, after making
   /// sure the transform is up to date.  Use to raycast into the scene to determine
@@ -112,7 +116,7 @@ public class ControlPlayer : MonoBehaviour {
       if (target == null) {
         transform.localRotation = rot;
       } else {
-        transform.rotation = target.rotation * rot;
+        transform.rotation = rot;
       }
     }
 
@@ -122,7 +126,7 @@ public class ControlPlayer : MonoBehaviour {
         transform.localPosition = pos;
       } else {
         //transform.position.z = target.position + target.rotation * pos;
-        Vector3 temp = transform.position;
+        /*Vector3 temp = transform.position;
         if(target.rotation.eulerAngles.z > minimumRightAngle && target.rotation.eulerAngles.z <= maximumRightAngle){
         	temp.x -= horizontalSpeed;
         } else if(target.rotation.eulerAngles.z > minimumLeftAngle && target.rotation.eulerAngles.z <= maximumLeftAngle){
@@ -132,7 +136,36 @@ public class ControlPlayer : MonoBehaviour {
         }
         Debug.Log(target.rotation.eulerAngles.z);
         temp.z += 0.1f;
-        transform.position = temp;
+        transform.position = temp;*/
+
+        //Advance the player through the tunnel
+        /*Vector3 temp = transform.position;
+        temp.z += forwardSpeed;
+        transform.position = temp;*/
+
+        float diff = (mainCamera.transform.rotation.eulerAngles.z - rotationVector.z);
+        diff = (diff < 0f) ? diff+360 : diff;
+        diff = (diff > 360f) ? diff-360 : diff;
+        Debug.Log(diff);
+        if(diff > minimumRightAngle && diff <= maximumRightAngle){
+	        rotationVector += new Vector3(0.0f, 0.0f, Time.deltaTime * rotateSpeed);
+			rotationVector.z = rotationVector.z%360;
+			rotationVector.z = (rotationVector.z > 360) ? rotationVector.z - 360 : rotationVector.z;
+        	parent.transform.Rotate(new Vector3(0.0f, Time.deltaTime * rotateSpeed, 0.0f), Space.Self);
+        	mainCamera.Rotate(new Vector3(0.0f, 0.0f, Time.deltaTime * rotateSpeed), Space.Self);
+        } else if(diff > minimumLeftAngle && diff <= maximumLeftAngle){
+	        rotationVector -= new Vector3(0.0f, 0.0f, Time.deltaTime * rotateSpeed);
+    		rotationVector.z = rotationVector.z%360;
+			rotationVector.z = (rotationVector.z < 0) ? rotationVector.z + 360 : rotationVector.z;
+			parent.transform.Rotate(new Vector3(0.0f, -Time.deltaTime * rotateSpeed, 0.0f), Space.Self);
+        	mainCamera.Rotate(new Vector3(0.0f, 0.0f, -Time.deltaTime * rotateSpeed), Space.Self);
+        } else {
+
+        }
+
+        // The parent should be one level higher from the target;
+        // comparison will be made between the parent and the target to determine
+        // if the player is turning their head.
       }
     }
 
