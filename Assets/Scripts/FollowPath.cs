@@ -18,6 +18,7 @@ public class FollowPath : MonoBehaviour {
 	private Quaternion _lastRotation;
 
 	private bool _first;
+	private bool _lastWasCurve;
 	// Use this for initialization
 	void Start () {
 
@@ -26,6 +27,7 @@ public class FollowPath : MonoBehaviour {
 		_lastPosition = Vector3.zero;
 		_lastRotation = Quaternion.identity;
 		_first = true;
+		_lastWasCurve = true;
 		PipeGenerationQueue = new Queue<GameObject>();
 		PipeFollowQueue = new Queue<GameObject>();
 
@@ -93,12 +95,15 @@ public class FollowPath : MonoBehaviour {
 	// Instantiate one new pipe randomly.
 	private GameObject RandomPipe()
 	{
-		int random = Random.Range(0,2);
+		// always straight after curve
+		int random = (_lastWasCurve) ? 0 : Random.Range(0,2);
 		switch(random)
 		{
 			case 0:
+				_lastWasCurve = false;
 				return Instantiate(StraightPipe, _lastPosition, _lastRotation) as GameObject;
 			case 1:
+				_lastWasCurve = true;
 				GameObject newPipe = Instantiate(CurvedPipe, _lastPosition, _lastRotation) as GameObject;
 
 				int randRotation = Random.Range(0,6);

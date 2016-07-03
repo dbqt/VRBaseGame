@@ -104,6 +104,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 490698}
   - 114: {fileID: 11493754}
+  - 114: {fileID: 11457628}
   m_Layer: 0
   m_Name: Straight_Pipe
   m_TagString: Untagged
@@ -279,6 +280,20 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300002, guid: fba7ced807cfb7345a3a83c186de3d04, type: 3}
+--- !u!114 &11457628
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1247127f693158045b4790fa4eb5cc03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObstaclePrefabs:
+  - {fileID: 137260, guid: c30f7515a7527a347bc19578b842b6f9, type: 2}
+  - {fileID: 122138, guid: ccf505ba17b387249803b80c33b3dab6, type: 2}
 --- !u!114 &11493754
 MonoBehaviour:
   m_ObjectHideFlags: 1
