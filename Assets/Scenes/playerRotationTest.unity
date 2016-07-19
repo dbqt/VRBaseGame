@@ -171,6 +171,7 @@ GameObject:
   - 33: {fileID: 748738398}
   - 136: {fileID: 748738397}
   - 23: {fileID: 748738396}
+  - 114: {fileID: 748738400}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -184,7 +185,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 748738395}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
@@ -212,7 +213,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 748738395}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
@@ -231,12 +232,26 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 748738395}
   m_LocalRotation: {x: 0.7061661, y: -0.026226657, z: 0.03646388, w: 0.70662016}
-  m_LocalPosition: {x: -0.00000010202393, y: 0.00000035746496, z: -0.00000002814229}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 6, y: 1, z: 6}
   m_Children:
   - {fileID: 1115734170}
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!114 &748738400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 748738395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef362d95e139a114bbb7b58dde444c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  StraightPipe: {fileID: 191392, guid: 7f78201215524a34ebd2e5c60b1a71d7, type: 2}
+  CurvedPipe: {fileID: 197240, guid: fff4aec5265d9ca4fa1ef50752d19604, type: 2}
 --- !u!4 &1012336065 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400006, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
@@ -250,15 +265,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0.00000011641532
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.00003504753
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0.577
+      value: 0.4105
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_LocalRotation.x
